@@ -20,7 +20,7 @@ export default function RootLayout({
       </head>
       <body>
         {children}
-        <InstallPrompt />
+        {/* <InstallPrompt /> */}
       </body>
     </html>
   )
