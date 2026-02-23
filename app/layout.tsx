@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import InstallPrompt from './InstallPrompt'
 import Script from 'next/script'
+import { ThemeProvider } from 'next-themes'
 
 export const metadata: Metadata = {
   title: 'Snippet editor',

@@ -2,9 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    /* Cambia el valor de background de Shadcn a transparente */
+    --background: 0 0% 100% / 0; 
+  }
+  .dark {
+    --background: 0 0% 0% / 0;
+  }
+}
+
+/* Fuerza transparencia total en el body para el WebView */
 body {
+  background-color: transparent !important;
+  background: transparent !important;
   font-family: Arial, Helvetica, sans-serif;
-  background: transparent;
 }
 
 @layer utilities {
@@ -15,9 +27,9 @@ body {
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 0 0% 100% / 0;
     --foreground: 0 0% 3.9%;
-    --card: 0 0% 100%;
+    --card: 0 0% 100% / 0;
     --card-foreground: 0 0% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 3.9%;
@@ -50,9 +62,9 @@ body {
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
   .dark {
-    --background: 0 0% 3.9%;
+    --background: 0 0% 3.9% / 0;
     --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
+    --card: 0 0% 3.9% / 0;
     --card-foreground: 0 0% 98%;
     --popover: 0 0% 3.9%;
     --popover-foreground: 0 0% 98%;
