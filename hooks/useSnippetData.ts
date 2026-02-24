@@ -19,7 +19,10 @@ export default function useSnippetData() {
                 [action.key as string]: action.payload
             }
         }
-        if (action.type == 'replace') return state
+        if (action.type == 'replace') {
+            console.log('reemplazando snippet', JSON.stringify(state))
+            return action.payload
+        }
 
         return state
     }, { prefix: '', description: 'ssss', codeText: "// Escribe tu código aquí\nconsole.log('Hola mundo');" })
@@ -34,7 +37,7 @@ export default function useSnippetData() {
 
     useEffect(() => {
         window.addEventListener('insertSnippet', (event: any) => {
-            alert('Evento recibido desde Flutter: ' + JSON.stringify(event.detail));
+            console.log('Evento recibido desde Flutter: ' + JSON.stringify(event.detail));
             dispatch({
                 type: 'replace',
                 payload: {
@@ -45,6 +48,14 @@ export default function useSnippetData() {
             })
         });
     }, [])
+
+    useEffect(() => {
+        if ((window as any).flutter_inappwebview) {
+            (window as any).flutter_inappwebview.callHandler('updateSnippet', jsonSnippet);
+        } else {
+            console.log('No existe flutter_inappwebview')
+        }
+    }, [jsonSnippet])
 
     return {
         snippetData, jsonSnippet,
