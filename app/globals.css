@@ -12,6 +12,10 @@
   }
 }
 
+* {
+  box-sizing: border-box;
+}
+
 /* Fuerza transparencia total en el body para el WebView */
 body {
   background-color: transparent !important;
