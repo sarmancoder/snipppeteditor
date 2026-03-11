@@ -54,7 +54,10 @@ export default function DualEditorPage() {
                         <span>Editor</span>
                         <Select options={languageScopes}
                             isMulti
-                            value={languageScopes.filter(a => snippetData.scope.split(',').includes(a.label))}
+                            value={languageScopes.filter(a => {
+                                var snippetLangs = snippetData.scope.split(',')
+                                return snippetLangs.includes(a.value)
+                            })}
                             onChange={(c) => {
                                 console.log('react select on change ' + JSON.stringify(c))
                                 updateSnippetKey('scope', c.map((a) => a.value).join(','))
