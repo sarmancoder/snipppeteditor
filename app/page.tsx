@@ -10,9 +10,10 @@ import useCodeEditor from "@/hooks/useCodeEditor"
 import useSnippetData from "@/hooks/useSnippetData"
 import Editor from "@monaco-editor/react"
 import { Clipboard, FileCode, Replace } from "lucide-react"
+import Select from 'react-select'
 
 export default function DualEditorPage() {
-    const { snippetData, updateSnippetKey, jsonSnippet, setSnippet } = useSnippetData()
+    const { snippetData, updateSnippetKey, languageScopes, jsonSnippet, setSnippet } = useSnippetData()
     const { handleLeftEditorMount, replaceWithFilenameBase, handlePaste } = useCodeEditor({
         setCodeText: (code) => updateSnippetKey('codeText', code),
         setJsonSnippet: (data) => setSnippet(JSON.parse(data as string))
@@ -49,11 +50,21 @@ export default function DualEditorPage() {
                             />
                         </div>
                     </div>
-                    <div className="p-3 bg-muted font-medium">Editor</div>
+                    <div className="p-3 bg-muted font-medium flex justify-between">
+                        <span>Editor</span>
+                        <Select options={languageScopes}
+                            isMulti
+                            value={languageScopes.filter(a => snippetData.scope.split(',').includes(a.label))}
+                            onChange={(c) => {
+                                console.log('react select on change ' + JSON.stringify(c))
+                                updateSnippetKey('scope', c.map((a) => a.value).join(','))
+                            }}
+                        />
+                    </div>  
                     <div className="flex-1 min-h-[60vh]">
                         <Editor
                             height="100%"
-                            defaultLanguage="javascript"
+                            language={snippetData.scope.split(',')[0]}
                             value={snippetData.codeText}
                             onChange={(value) => {
                                 updateSnippetKey('codeText', value)
