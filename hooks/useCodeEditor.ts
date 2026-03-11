@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { useToast } from "@/components/ui/use-toast"
 import type * as monaco from "monaco-editor"
 import { OnMount } from "@monaco-editor/react";
-import { registerVueLanguage } from "@/app/registersLanguages";
+import { registerVueLanguage } from "./registersLanguages";
 
 export default function useCodeEditor({setCodeText, setJsonSnippet}) {
     const { toast } = useToast()
