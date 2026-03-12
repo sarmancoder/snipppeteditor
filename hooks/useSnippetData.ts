@@ -12,35 +12,37 @@ type StateType = {
 type DispatchType = { type: 'update' | 'replace'; key?: string, payload: any }
 
 const languageScopes = [
-  // Web Core
-  { value: 'vue', label: 'Vue SFC' },
-  { value: 'html', label: 'HTML' },
-  { value: 'css', label: 'CSS' },
-  { value: 'javascript', label: 'JavaScript' },
-  { value: 'typescript', label: 'TypeScript' },
-  { value: 'scss', label: 'SCSS' },
+    // Web Core
+    { value: 'javascriptreact', label: 'React JS (JSX)' },
+    { value: 'typescriptreact', label: 'React TS (TSX)' },
+    { value: 'vue', label: 'Vue SFC' },
+    { value: 'html', label: 'HTML' },
+    { value: 'css', label: 'CSS' },
+    { value: 'javascript', label: 'JavaScript' },
+    { value: 'typescript', label: 'TypeScript' },
+    { value: 'scss', label: 'SCSS' },
 
-  // Backend
-  { value: 'php', label: 'PHP' },
-  { value: 'python', label: 'Python' },
-  { value: 'go', label: 'Go' },
-  { value: 'java', label: 'Java' },
-  { value: 'csharp', label: 'C#' },
-  { value: 'rust', label: 'Rust' },
-  { value: 'ruby', label: 'Ruby' },
+    // Backend
+    { value: 'php', label: 'PHP' },
+    { value: 'python', label: 'Python' },
+    { value: 'go', label: 'Go' },
+    { value: 'java', label: 'Java' },
+    { value: 'csharp', label: 'C#' },
+    { value: 'rust', label: 'Rust' },
+    { value: 'ruby', label: 'Ruby' },
 
-  // Config & Data
-  { value: 'json', label: 'JSON' },
-  { value: 'yaml', label: 'YAML' },
-  { value: 'markdown', label: 'Markdown' },
-  { value: 'sql', label: 'SQL' },
-  { value: 'shell', label: 'Shell / Bash' },
-  { value: 'dockerfile', label: 'Dockerfile' },
+    // Config & Data
+    { value: 'json', label: 'JSON' },
+    { value: 'yaml', label: 'YAML' },
+    { value: 'markdown', label: 'Markdown' },
+    { value: 'sql', label: 'SQL' },
+    { value: 'shell', label: 'Shell / Bash' },
+    { value: 'dockerfile', label: 'Dockerfile' },
 
-  // Otros populares
-  { value: 'xml', label: 'XML' },
-  { value: 'lua', label: 'Lua' },
-  { value: 'cpp', label: 'C++' }
+    // Otros populares
+    { value: 'xml', label: 'XML' },
+    { value: 'lua', label: 'Lua' },
+    { value: 'cpp', label: 'C++' }
 ];
 
 export default function useSnippetData() {
@@ -48,6 +50,9 @@ export default function useSnippetData() {
         if (action.type == 'update') {
             // console.log('updating', action.key)
             console.log('JSON SNIPPET UPDATING ' + JSON.stringify(action.payload))
+            if (action.key == 'codeText') {
+                console.log('actualizando codigo', action.payload)
+            }
             return {
                 ...state,
                 [action.key as string]: action.payload
@@ -94,20 +99,37 @@ export default function useSnippetData() {
         if ((window as any).flutter_inappwebview) {
             console.log('JSON SNIPPET UPDATING ' + jsonSnippet);
             (window as any).flutter_inappwebview.callHandler?.('updateSnippet', jsonSnippet);
-        } else {
-            console.log('No existe flutter_inappwebview')
         }
     }, [jsonSnippet, isEmpty])
 
-    return { languageScopes,
+    function updateSnippetKey(key: string, value: any) {
+        try {
+            var jsonSnippet = JSON.parse(value)
+            const body = Array.isArray(jsonSnippet.body) ? jsonSnippet.body.join('\n') : jsonSnippet.body
+            updateSnippetKey('codeText',  body)
+            updateSnippetKey('prefix', jsonSnippet.prefix)
+            updateSnippetKey('description', jsonSnippet.description)
+            updateSnippetKey('scope', jsonSnippet.scope ?? '')
+        } catch (err: any) {
+            const jsonError = err.message.includes('is not valid JSON')
+            if (jsonError) {
+                dispatch({ payload: value, type: 'update', key })
+            } else {
+                console.log(err)
+            }
+        }
+    }
+
+    return {
+        languageScopes,
         snippetData, jsonSnippet,
-        updateSnippetKey(key: string, value: any) {
-            dispatch({ payload: value, type: 'update', key })
-        },
-        setSnippet(data: any) {
-            dispatch({ payload: data.prefix, type: 'update', key: 'prefix' })
-            dispatch({ payload: data.body.join('\n'), type: 'update', key: 'codeText' })
-            dispatch({ payload: data.description, type: 'update', key: 'description' })
+        updateSnippetKey,
+        setSnippet(jsonSnippet: any) {
+            const body = Array.isArray(jsonSnippet.body) ? jsonSnippet.body.join('\n') : jsonSnippet.body
+            updateSnippetKey('codeText',  body)
+            updateSnippetKey('prefix', jsonSnippet.prefix)
+            updateSnippetKey('description', jsonSnippet.description)
+            updateSnippetKey('scope', jsonSnippet.scope ?? '')
         }
     }
 }
