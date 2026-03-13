@@ -9,6 +9,8 @@ pruebasyoutube
 /.next/
 /out/
 
+package-lock.json
+
 # production
 /build
 
