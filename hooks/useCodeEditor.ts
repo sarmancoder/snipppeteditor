@@ -1,11 +1,13 @@
 import { useRef } from "react";
-import { useToast } from "@/components/ui/use-toast"
+// import { useToast } from "@/components/ui/use-toast"
 import type * as monaco from "monaco-editor"
 import { OnMount } from "@monaco-editor/react";
 import { registerVueLanguage } from "./registersLanguages";
 
+const toast = (a: any) => {};
+
 export default function useCodeEditor({setCodeText, setJsonSnippet}) {
-    const { toast } = useToast()
+    // const { toast } = useToast()
     const leftEditorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null)
 
     const handleLeftEditorMount: OnMount = (editor, monaco) => {

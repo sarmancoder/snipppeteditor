@@ -1,10 +1,10 @@
-@tailwind base;
+/*@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    /* Cambia el valor de background de Shadcn a transparente */
+    /* Cambia el valor de background de Shadcn a transparente
     --background: 0 0% 100% / 0; 
   }
   .dark {
@@ -16,7 +16,7 @@
   box-sizing: border-box;
 }
 
-/* Fuerza transparencia total en el body para el WebView */
+/* Fuerza transparencia total en el body para el WebView 
 body {
   background-color: transparent !important;
   background: transparent !important;
@@ -109,3 +109,4 @@ body {
     @apply bg-background text-foreground;
   }
 }
+*/
