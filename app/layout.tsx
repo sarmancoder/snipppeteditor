@@ -2,7 +2,12 @@ import type { Metadata } from 'next'
 import './globals.css'
 import InstallPrompt from './InstallPrompt'
 import Script from 'next/script'
-import { ThemeProvider } from 'next-themes'
+
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+import MyThemeProvider from '@/components/ThemeProvider';
 
 export const metadata: Metadata = {
   title: 'Snippet editor',
@@ -15,12 +20,14 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="es">
       <head>
         <Script src='/script.js'></Script>
       </head>
       <body>
-        {children}
+        <MyThemeProvider>
+          {children}
+        </MyThemeProvider>
         {/* <InstallPrompt /> */}
       </body>
     </html>
