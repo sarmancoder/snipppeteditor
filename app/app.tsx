@@ -7,6 +7,7 @@ import { useLocalStorage } from "@uidotdev/usehooks"
 import { useEffect, useState } from "react"
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
+import { localStorageDarkModeKey, uiStates, useMyThemeProviderContext } from '@/components/ThemeProvider'
 
 const appbarStateKey = "hide-appbar"
 
@@ -16,6 +17,7 @@ const appBarStates = Object.freeze({
 })
 
 export default function DualEditorPage() {
+    const {setDark} = useMyThemeProviderContext()
     const [appbarState, setAppbarState] = useLocalStorage(appbarStateKey, appBarStates.showed)
     const { snippetData, updateSnippetKey, languageScopes, jsonSnippet, setSnippet } = useSnippetData()
     const { handleLeftEditorMount, replaceWithFilenameBase, handlePaste } = useCodeEditor({
@@ -33,6 +35,12 @@ export default function DualEditorPage() {
         if ((window as any).flutter_inappwebview) {
             localStorage.setItem('hide-appbar', appBarStates.hided)
             setAppbarState(appBarStates.hided as any)
+
+            window.addEventListener('toggleDark', (event: any) => {
+                const isDark = event.detail.dark == uiStates.dark
+                setDark(isDark)
+                localStorage.setItem(localStorageDarkModeKey, isDark ? uiStates.dark : uiStates.light)
+            })
         }
     }, [])
 
@@ -152,7 +160,7 @@ export default function DualEditorPage() {
 function MyAppBar() {
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static">
+            <AppBar position="static" elevation={0}>
                 <Toolbar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Snippet editor
