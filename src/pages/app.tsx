@@ -1,7 +1,7 @@
-import React from 'react'
+import DualEditorPage from '../components/DualEditorPage'
 
 export default function app() {
   return (
-    <div>app</div>
+    <DualEditorPage />
   )
 }
