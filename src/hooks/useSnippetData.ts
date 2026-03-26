@@ -48,11 +48,6 @@ const languageScopes = [
 export default function useSnippetData() {
     const [snippetData, dispatch] = useReducer<StateType, [DispatchType]>((state, action) => {
         if (action.type == 'update') {
-            // console.log('updating', action.key)
-            console.log('JSON SNIPPET UPDATING ' + JSON.stringify(action.payload))
-            if (action.key == 'codeText') {
-                console.log('actualizando codigo', action.payload)
-            }
             return {
                 ...state,
                 [action.key as string]: action.payload
@@ -105,11 +100,11 @@ export default function useSnippetData() {
     function updateSnippetKey(key: string, value: any) {
         try {
             var jsonSnippet = JSON.parse(value)
-            const body = Array.isArray(jsonSnippet.body) ? jsonSnippet.body.join('\n') : jsonSnippet.body
+            /*const body = Array.isArray(jsonSnippet.body) ? jsonSnippet.body.join('\n') : jsonSnippet.body
             updateSnippetKey('codeText',  body)
             updateSnippetKey('prefix', jsonSnippet.prefix)
             updateSnippetKey('description', jsonSnippet.description)
-            updateSnippetKey('scope', jsonSnippet.scope ?? '')
+            updateSnippetKey('scope', jsonSnippet.scope ?? '')*/
         } catch (err: any) {
             const jsonError = err.message.includes('is not valid JSON')
             if (jsonError) {
