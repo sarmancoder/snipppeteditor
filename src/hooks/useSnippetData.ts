@@ -98,21 +98,7 @@ export default function useSnippetData() {
     }, [jsonSnippet, isEmpty])
 
     function updateSnippetKey(key: string, value: any) {
-        try {
-            var jsonSnippet = JSON.parse(value)
-            /*const body = Array.isArray(jsonSnippet.body) ? jsonSnippet.body.join('\n') : jsonSnippet.body
-            updateSnippetKey('codeText',  body)
-            updateSnippetKey('prefix', jsonSnippet.prefix)
-            updateSnippetKey('description', jsonSnippet.description)
-            updateSnippetKey('scope', jsonSnippet.scope ?? '')*/
-        } catch (err: any) {
-            const jsonError = err.message.includes('is not valid JSON')
-            if (jsonError) {
-                dispatch({ payload: value, type: 'update', key })
-            } else {
-                console.log(err)
-            }
-        }
+        dispatch({ payload: value, type: 'update', key })
     }
 
     return {
