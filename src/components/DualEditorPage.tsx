@@ -1,15 +1,9 @@
+import { Editor } from "@monaco-editor/react"
+import { Box, Button, Card, CardContent, CardHeader, InputLabel, Menu, MenuItem, TextField } from '@mui/material'
+import { useState } from "react"
 import Select from 'react-select'
 import useCodeEditor from "../hooks/useCodeEditor"
 import useSnippetData from "../hooks/useSnippetData"
-import { Editor } from "@monaco-editor/react"
-import { Box, Button, Card, CardContent, CardHeader, InputLabel, Menu, MenuItem, TextField, Typography } from '@mui/material'
-import { useLocalStorage } from "@uidotdev/usehooks"
-import { useEffect, useState } from "react"
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import { useMyThemeProviderContext } from './useMyThemeProviderContext'
-import { uiStates } from './uiStates'
-import { localStorageDarkModeKey } from './ThemeProvider'
 
 export default function DualEditorPage() {
     const { snippetData, updateSnippetKey, languageScopes, jsonSnippet, setSnippet } = useSnippetData()
@@ -136,16 +130,3 @@ export default function DualEditorPage() {
     )
 }
 
-function MyAppBar() {
-    return (
-        <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static" elevation={0}>
-                <Toolbar>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        Snippet editor
-                    </Typography>
-                </Toolbar>
-            </AppBar>
-        </Box>
-    );
-}

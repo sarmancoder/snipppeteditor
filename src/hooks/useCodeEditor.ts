@@ -3,7 +3,9 @@ import type * as monaco from "monaco-editor"
 import { type OnMount } from "@monaco-editor/react";
 import { registerVueLanguage } from "./registersLanguages";
 
-const toast = (a: any) => {};
+const toast = (a: any) => {
+    console.log(a)
+};
 
 // @ts-ignore
 export default function useCodeEditor({setCodeText, setJsonSnippet}) {
