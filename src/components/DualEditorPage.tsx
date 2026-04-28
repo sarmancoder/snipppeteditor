@@ -19,54 +19,60 @@ export default function DualEditorPage() {
     };
 
     return (
-        <>
-            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 3, maxWidth: '1280px', margin: '0 auto', p: 1, boxSizing: 'border-box', mt: 2, height: '80vh' }}>
-                <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', gap: 2, height: '100%' }}>
-                    <Box>
-                        <InputLabel>Prefijo</InputLabel>
-                        <TextField fullWidth={true}
-                            size='small'
-                            value={snippetData.prefix}
-                            onChange={(e) => {
-                                updateSnippetKey('prefix', e.target.value)
-                            }}
-                        />
-                    </Box>
-                    <Box>
-                        <InputLabel>Descripción</InputLabel>
-                        <TextField fullWidth={true}
-                            size='small'
-                            value={snippetData.description}
-                            onChange={(e) => {
-                                updateSnippetKey('description', e.target.value)
-                            }}
-                        />
-                    </Box>
-                    <Card sx={{ flexGrow: 1 }}>
-                        <CardHeader
-                            title="Editor"
-                            action={(
-                                <Select options={languageScopes}
+        /* 1. Usamos 100vh para que ocupe toda la pantalla y eliminamos el height: 80vh */
+        <Box sx={{ 
+            display: 'flex', 
+            flexDirection: 'row', 
+            gap: 3, 
+            maxWidth: '1280px', 
+            margin: '0 auto', 
+            p: 2, 
+            boxSizing: 'border-box', 
+            height: '100vh', // Ocupa el alto total
+            overflow: 'hidden' // Evita scrolls dobles
+        }}>
+            
+            {/* COLUMNA IZQUIERDA */}
+            <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 2, height: '100%' }}>
+                <Box>
+                    <InputLabel>Prefijo</InputLabel>
+                    <TextField fullWidth size='small' value={snippetData.prefix} onChange={(e) => updateSnippetKey('prefix', e.target.value)} />
+                </Box>
+                <Box>
+                    <InputLabel>Descripción</InputLabel>
+                    <TextField fullWidth size='small' value={snippetData.description} onChange={(e) => updateSnippetKey('description', e.target.value)} />
+                </Box>
+                
+                {/* 2. El Card debe crecer para ocupar el resto del espacio */}
+                <Card sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+                    <CardHeader
+                        title="Editor"
+                        sx={{ pb: 0 }} // Menos espacio abajo
+                        action={(
+                            <Box sx={{ width: 300 }}>
+                                <Select 
+                                    options={languageScopes}
                                     isMulti
-                                    value={languageScopes.filter(a => {
-                                        var snippetLangs = snippetData.scope.split(',')
-                                        return snippetLangs.includes(a.value)
-                                    })}
-                                    onChange={(c) => {
-                                        console.log('react select on change ' + JSON.stringify(c))
-                                        updateSnippetKey('scope', c.map((a) => a.value).join(','))
-                                    }}
+                                    value={languageScopes.filter(a => snippetData.scope.split(',').includes(a.value))}
+                                    onChange={(c) => updateSnippetKey('scope', c.map((a) => a.value).join(','))}
                                 />
-                            )}
-                        />
-                        <CardContent sx={{ height: '100%' }}>
+                            </Box>
+                        )}
+                    />
+                    {/* 3. CardContent necesita flex: 1 para estirarse */}
+                    <CardContent sx={{ 
+                        flexGrow: 1, 
+                        display: 'flex', 
+                        flexDirection: 'column', 
+                        gap: 1,
+                        '&:last-child': { pb: 2 } // Fix para el padding extra de MUI
+                    }}>
+                        <Box sx={{ flexGrow: 1, minHeight: 0 }}> {/* minHeight: 0 es clave para flex hijos */}
                             <Editor
-                                height="260px"
+                                height="100%" // Ahora sí puede ser 100%
                                 language={snippetData.scope.split(',')[0]}
                                 value={snippetData.codeText}
-                                onChange={(value) => {
-                                    updateSnippetKey('codeText', value)
-                                }}
+                                onChange={(value) => updateSnippetKey('codeText', value)}
                                 theme="vs-dark"
                                 options={{
                                     minimap: { enabled: false },
@@ -75,42 +81,29 @@ export default function DualEditorPage() {
                                 }}
                                 onMount={handleLeftEditorMount}
                             />
-                            <Box sx={{ padding: 1 }}>
-                                <Button
-                                    id="basic-button"
-                                    aria-controls={open ? 'basic-menu' : undefined}
-                                    aria-haspopup="true"
-                                    aria-expanded={open ? 'true' : undefined}
-                                    onClick={(ev) => {
-                                        setAnchorEl(ev.currentTarget)
-                                    }}
-                                >
-                                    Reemplazar
-                                </Button>
-                                <Menu
-                                    id="basic-menu"
-                                    anchorEl={anchorEl}
-                                    open={open}
-                                    onClose={handleClose}
-                                    slotProps={{
-                                        list: {
-                                            'aria-labelledby': 'basic-button',
-                                        },
-                                    }}
-                                >
-                                    <MenuItem onClick={() => {
-                                        replaceWithFilenameBase()
-                                        handleClose()
-                                    }}>Insertar ${"{TM_FILENAME_BASE}"}</MenuItem>
-                                </Menu>
-                                <Button onClick={() => handlePaste('left')}>Pegar</Button>
-                            </Box>
-                        </CardContent>
-                    </Card>
-                </Box>
-                <Box sx={{ flexGrow: 1 }}>
+                        </Box>
+                        
+                        <Box sx={{ display: 'flex', gap: 1 }}>
+                            <Button variant="outlined" size="small" onClick={(ev) => setAnchorEl(ev.currentTarget)}>
+                                Reemplazar
+                            </Button>
+                            <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+                                <MenuItem onClick={() => { replaceWithFilenameBase(); handleClose(); }}>
+                                    Insertar {"${TM_FILENAME_BASE}"}
+                                </MenuItem>
+                            </Menu>
+                            <Button variant="outlined" size="small" onClick={() => handlePaste('left')}>Pegar</Button>
+                        </Box>
+                    </CardContent>
+                </Card>
+            </Box>
+
+            {/* COLUMNA DERECHA */}
+            <Box sx={{ flex: 1, height: '100%', display: 'flex', flexDirection: 'column' }}>
+                <InputLabel sx={{ mb: 1 }}>JSON Resultante</InputLabel>
+                <Box sx={{ flexGrow: 1, border: '1px solid #444', borderRadius: 1, overflow: 'hidden' }}>
                     <Editor
-                        height="90%"
+                        height="100%"
                         width='100%'
                         defaultLanguage="json"
                         value={jsonSnippet}
@@ -126,7 +119,6 @@ export default function DualEditorPage() {
                     />
                 </Box>
             </Box>
-        </>
+        </Box>
     )
 }
-
