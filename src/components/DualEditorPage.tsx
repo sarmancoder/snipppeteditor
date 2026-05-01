@@ -1,4 +1,4 @@
-import { Editor } from "@monaco-editor/react";
+import { Editor, type Monaco } from "@monaco-editor/react";
 import { Box, Card, CardActions, CardContent, CardHeader, TextField } from "@mui/material";
 import { useAppContext } from "../hooks/useAppContext";
 import Select from "react-select";
@@ -26,12 +26,31 @@ export default function DualEditorPage() {
           />
           <CardContent>
             <Editor
-              onMount={(ed) => {
+              onMount={(ed, monaco: Monaco) => {
                 codeEditorRef.current = ed
+                monaco.languages.registerCompletionItemProvider('javascript', {
+                  provideCompletionItems: () => {
+                    const suggestions = [
+                      {
+                        label: 'log', // Lo que escribes para buscarlo
+                        kind: monaco.languages.CompletionItemKind.Snippet,
+                        documentation: 'Crea un console.log',
+                        insertText: 'console.log(${1:variable});$0', // ${1} es donde salta el cursor, $0 el final
+                        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                        /*range: {
+                          startLineNumber: position.lineNumber,
+                          endLineNumber: position.lineNumber,
+                          startColumn: position.column - 1,
+                          endColumn: position.column,
+                        },*/
+                      },
+                    ];
+                    return { suggestions: suggestions };
+                  },
+                });
               }}
-              language={snippetData.scope.split(',')[0]}
+              language={snippetData.scope.split(',')[0] || 'plaintext'}
               height={'500px'} theme="vs-dark"
-              // value={codigo}
               onChange={(e) => {
                 if (!e) return
                 setValue('codeText', e)

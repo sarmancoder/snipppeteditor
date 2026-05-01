@@ -6,7 +6,6 @@ import { components, hooks, utils } from '@generouted/react-router/client'
 export type Path =
   | `/`
   | `/app`
-  | `/appprueba`
 
 export type Params = {
   
