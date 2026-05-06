@@ -26,6 +26,9 @@ function Layout({children}: any) {
     const { setDark } = useMyThemeProviderContext()
     const [appbarState, setAppbarState] = useLocalStorage(appbarStateKey, appBarStates.showed)
     useEffect(() => {
+        if ((window as any).javaApp) {
+            (window as any).javaApp.printMessage("Hola mundoooo");
+        }
         if ((window as any).flutter_inappwebview) {
             localStorage.setItem('hide-appbar', appBarStates.hided)
             setAppbarState(appBarStates.hided as any)
