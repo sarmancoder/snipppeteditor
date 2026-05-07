@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+    <script>
+        (function() {
+            const _log = console.log;
+            const _error = console.error;
+            const _warn = console.warn;
+
+            console.log = function(...args) {
+                alert('[LOG] ' + args.join(' '));
+                window.javaApp.printMessage('browser log: ' + args.join(' '));
+                _log.apply(console, args);
+            };
+            console.error = function(...args) {
+                alert('[ERROR] ' + args.join(' '));
+                _error.apply(console, args);
+            };
+            console.warn = function(...args) {
+                alert('[WARN] ' + args.join(' '));
+                _warn.apply(console, args);
+            };
+        })();
+
+        function probar() {
+            alert('holaaaa')
+            try {
+                console.log('spy tonto')
+                const result = window.javaApp.printMessage("Hola mundoooo");
+                alert("Java respondió: " + result);
+
+            } catch (error) {
+                alert(Object.keys(window._javaApp).join(', '))
+                alert(error.message)
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <h1>prueba</h1>
+    <button onclick="probar()">
+        holaa
+    </button>
+</body>
+
+</html>

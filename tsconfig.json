@@ -6,6 +6,7 @@
   ],
   "compilerOptions": {
     "noImplicitAny": false,
-    "strict": false
+    "strict": false,
+    "types": ["node", "vite-plugin-pwa/client"]
   }
 }

@@ -1,18 +1,34 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <script>
-      if (window.javaApp) {
-          window.javaApp.printMessage("Hola mundoooo");
-      }
-    </script>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>snipppeteditor</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<html lang="es">
+
+<head>
+  <script>
+    (function () {
+      const _log = console.log;
+      const _error = console.error;
+      const _warn = console.warn;
+
+      console.log = function (...args) {
+        window.javaApp?.printMessage('browser log: ' + args.join(' '));
+        _log.apply(console, args);
+      };
+      console.error = function (...args) {
+        _error.apply(console, args);
+      };
+      console.warn = function (...args) {
+        _warn.apply(console, args);
+      };
+    })();
+  </script>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>snipppeteditor</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
 </html>

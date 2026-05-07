@@ -7,6 +7,10 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import RootComponent from './RootComponent';
 import { Routes } from '@generouted/react-router';
+// @ts-ignore
+import { registerSW } from 'virtual:pwa-register'
+
+registerSW({ immediate: true })
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -15,4 +19,3 @@ createRoot(document.getElementById('root')!).render(
     </RootComponent>
   </StrictMode>,
 )
-

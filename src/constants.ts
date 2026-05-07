@@ -32,3 +32,5 @@ export const languageScopes = [
     { value: 'lua', label: 'Lua' },
     { value: 'cpp', label: 'C++' }
 ];
+
+export const drawerWidth = '200px'

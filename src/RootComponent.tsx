@@ -27,7 +27,7 @@ function Layout({children}: any) {
     const [appbarState, setAppbarState] = useLocalStorage(appbarStateKey, appBarStates.showed)
     useEffect(() => {
         if ((window as any).javaApp) {
-            (window as any).javaApp.printMessage("Hola mundoooo");
+            (window as any).javaApp?.printMessage("Hola mundoooo");
         }
         if ((window as any).flutter_inappwebview) {
             localStorage.setItem('hide-appbar', appBarStates.hided)
@@ -43,7 +43,7 @@ function Layout({children}: any) {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            {appbarState == appBarStates.showed && <AppBar position="static" elevation={0}>
+            {appbarState == appBarStates.showed && <AppBar position="fixed" elevation={0}>
                 <Toolbar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Snippet editor

@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useReducer, useRef } from "react"
+import { createContext, useContext, useEffect, useMemo, useReducer, useRef, useState } from "react"
 import type { editor } from "monaco-editor";
 
 const AppContext = createContext<any>(null)
@@ -17,6 +17,19 @@ type keySnippetTypes = 'codeText' | 'prefix' | 'description' | 'scope'
 function useApp() {
     const codeEditorRef = useRef<editor.IStandaloneCodeEditor>(null)
     const resultSnippetEditor = useRef<editor.IStandaloneCodeEditor>(null)
+    const [isPWA, setIsPWA] = useState(false);
+
+    useEffect(() => {
+        // 1. Detecta si la media query coincide con standalone (instalada)
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+
+        // 2. En iOS/Safari hay una propiedad específica
+        const isIOSPWA = (window.navigator as any).standalone === true;
+
+        const isFlutter = typeof (window as any).flutter_inappwebview !== 'undefined'
+
+        setIsPWA(isStandalone || isIOSPWA && !isFlutter);
+    }, []);
 
     const [snippetData, dispatch] = useReducer<StateType, [DispatchType]>((state, action) => {
         if (action.type == 'update') {
@@ -55,7 +68,7 @@ function useApp() {
         updateSnippetKey(key, value)
     }
 
-    function replaceEditorContent (text: string) {
+    function replaceEditorContent(text: string) {
         try {
             const snippetJSON = JSON.parse(text)
             dispatch({ payload: snippetJSON, type: 'replace' })
@@ -98,6 +111,7 @@ function useApp() {
         codigo: snippetData.codeText,
         snippetData,
         snippetResult,
+        isPWA,
         setValue,
         async onPasteExistingSnippet() {
             replaceEditorContentFromClipboard()
