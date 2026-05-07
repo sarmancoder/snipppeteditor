@@ -1,6 +1,6 @@
 import { Box, Toolbar } from '@mui/material'
 import DualEditorPage from '../components/DualEditorPage'
-import AppEditorProvider, { useAppContext } from '../hooks/useAppContext'
+import AppEditorProvider from '../hooks/useAppContext'
 import { drawerWidth } from '../constants'
 import PwaDrawer from '../components/PwaDrawer'
 
