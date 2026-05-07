@@ -5,7 +5,7 @@ import { drawerWidth, fileExtension } from '../constants'
 import { useAppContext } from '../hooks/useAppContext'
 import fileManager from '../utils/fs'
 
-export default function PwaDrawer() {
+export default function FilesDrawer() {
     const [dirName, setDirName] = useState('')
     const [files, setFiles] = useState<Awaited<ReturnType<typeof fileManager['listFiles']>>>([])
 

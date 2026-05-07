@@ -2,14 +2,16 @@ import { Box, Toolbar } from '@mui/material'
 import DualEditorPage from '../components/DualEditorPage'
 import AppEditorProvider from '../hooks/useAppContext'
 import { drawerWidth } from '../constants'
-import PwaDrawer from '../components/PwaDrawer'
+import DrawerFiles from '../components/DrawerFiles'
+import DrawerSnippets from '../components/DrawerSnippets'
 
 export default function app() {
   return (
     <AppEditorProvider>
       <Box sx={{py: 5}}>
-        <PwaDrawer />
-        <Box sx={{position: 'absolute', left: drawerWidth, top: 0, right: 0}}>
+        <DrawerFiles />
+        <DrawerSnippets />
+        <Box sx={{position: 'absolute', left: drawerWidth, right: drawerWidth, top: 0}}>
           <Toolbar />
           <Box sx={{p: 1}}>
             <DualEditorPage />
