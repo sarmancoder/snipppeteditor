@@ -7,6 +7,6 @@
   "compilerOptions": {
     "noImplicitAny": false,
     "strict": false,
-    "types": ["node", "vite-plugin-pwa/client"]
+    "types": ["node", "vite-plugin-pwa/client", "@types/wicg-file-system-access"]
   }
 }

@@ -34,3 +34,5 @@ export const languageScopes = [
 ];
 
 export const drawerWidth = '200px'
+
+export const fileExtension = 'code-snippets'

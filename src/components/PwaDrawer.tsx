@@ -1,11 +1,15 @@
-import { Box, colors, Toolbar, Typography, Button } from '@mui/material'
-import { drawerWidth } from '../constants'
+import { Folder } from '@mui/icons-material'
+import { Box, colors, IconButton, List, ListItemButton, ListItemText, Toolbar, Typography } from '@mui/material'
+import { useState } from 'react'
+import { drawerWidth, fileExtension } from '../constants'
 import { useAppContext } from '../hooks/useAppContext'
-import useFS from '../hooks/useFs'
+import fileManager from '../utils/fs'
 
 export default function PwaDrawer() {
-    const {leerDirectorio} = useFS()
-    const {isPWA} = useAppContext()
+    const [dirName, setDirName] = useState('')
+    const [files, setFiles] = useState<Awaited<ReturnType<typeof fileManager['listFiles']>>>([])
+
+    const { isPWA } = useAppContext()
 
     if (isPWA) return (<Box />)
 
@@ -21,10 +25,23 @@ export default function PwaDrawer() {
         }}>
             <Toolbar />
             <Box sx={{ p: 1 }}>
-                <Typography variant="h5" color="initial">drawer</Typography>
-                <Button variant="contained" color="primary" onClick={leerDirectorio}>
-                    Leer directorio
-                </Button>
+                <IconButton onClick={async () => {
+                    const name = await fileManager.selectDirectory()
+                    if (!name) return
+                    setDirName(name)
+                    const files = await fileManager.listFiles()
+                    setFiles(files)
+                }}>
+                    <Folder />
+                </IconButton>
+                <Typography variant="body1" color="initial">{dirName}</Typography>
+            </Box>
+            <Box>
+                <List>
+                    {files.map((item) => <ListItemButton key={item.name}>
+                        <ListItemText primary={item.name.replace('.' + fileExtension, '')} />
+                    </ListItemButton>)}
+                </List>
             </Box>
         </Box>
     )
