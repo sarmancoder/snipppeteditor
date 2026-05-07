@@ -2,6 +2,7 @@ export default function useFS() {
     async function leerDirectorio() {
         try {
             // 1. Abrir el selector de carpetas
+            // @ts-ignore
             const directorioHandle = await window.showDirectoryPicker();
 
             // 2. Iterar sobre los archivos y carpetas
