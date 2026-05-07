@@ -1,9 +1,11 @@
-import { Box, colors, Toolbar, Typography } from '@mui/material'
-import { drawerWidth } from '../constants'
+import { Box, colors, List, ListItemButton, ListItemText, Toolbar } from '@mui/material'
+import { drawerWidth, fileExtension } from '../constants'
 import { useAppContext } from '../hooks/useAppContext'
+import { useFSContext } from '../hooks/useFSContext'
 
 export default function DrawerSnippets() {
     const { isPWA } = useAppContext()
+    const {snippets, activeSnippet, setActiveSnippet} = useFSContext()
 
     if (isPWA) return (<Box />)
 
@@ -18,7 +20,16 @@ export default function DrawerSnippets() {
             zIndex: (theme) => theme.zIndex.appBar - 1
         }}>
             <Toolbar />
-            <Typography variant="body1" color="initial">snippetss</Typography>
+            <Box>
+                <List>
+                    {snippets.map((item) => <ListItemButton key={item.key}
+                        selected={item.key == activeSnippet}
+                        onClick={() => setActiveSnippet(item.key)}
+                    >
+                        <ListItemText primary={item.prefix} secondary={item.description} />
+                    </ListItemButton>)}
+                </List>
+            </Box>
         </Box>
     )
 }

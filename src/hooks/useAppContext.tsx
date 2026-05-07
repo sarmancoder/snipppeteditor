@@ -39,8 +39,6 @@ function useApp() {
             }
         }
         if (action.type == 'replace') {
-            // console.log('reemplazando snippet', JSON.stringify(state))
-            console.log(action.payload)
             const { body: codeText, ...payload } = action.payload
             codeEditorRef.current?.setValue(codeText.join('\n'))
             return {
@@ -77,6 +75,7 @@ function useApp() {
                 console.log(error)
                 console.log('JSON no válido')
             } else {
+                console.log(error)
                 console.log('error desconocido')
             }
         }
@@ -113,6 +112,7 @@ function useApp() {
         snippetResult,
         isPWA,
         setValue,
+        replaceEditorContent,
         async onPasteExistingSnippet() {
             replaceEditorContentFromClipboard()
         }

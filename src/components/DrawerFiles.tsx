@@ -1,14 +1,11 @@
 import { Folder } from '@mui/icons-material'
 import { Box, colors, IconButton, List, ListItemButton, ListItemText, Toolbar, Typography } from '@mui/material'
-import { useState } from 'react'
 import { drawerWidth, fileExtension } from '../constants'
 import { useAppContext } from '../hooks/useAppContext'
-import fileManager from '../utils/fs'
+import { useFSContext } from '../hooks/useFSContext'
 
 export default function FilesDrawer() {
-    const [dirName, setDirName] = useState('')
-    const [files, setFiles] = useState<Awaited<ReturnType<typeof fileManager['listFiles']>>>([])
-
+    const {pickDirectory, dirName, files, activeFile, setActiveFile} = useFSContext()
     const { isPWA } = useAppContext()
 
     if (isPWA) return (<Box />)
@@ -26,11 +23,7 @@ export default function FilesDrawer() {
             <Toolbar />
             <Box sx={{ p: 1 }}>
                 <IconButton onClick={async () => {
-                    const name = await fileManager.selectDirectory()
-                    if (!name) return
-                    setDirName(name)
-                    const files = await fileManager.listFiles()
-                    setFiles(files)
+                    pickDirectory()
                 }}>
                     <Folder />
                 </IconButton>
@@ -38,7 +31,10 @@ export default function FilesDrawer() {
             </Box>
             <Box>
                 <List>
-                    {files.map((item) => <ListItemButton key={item.name}>
+                    {files.map((item) => <ListItemButton key={item.name}
+                        selected={item.name == activeFile}
+                        onClick={() => setActiveFile(item.name)}
+                    >
                         <ListItemText primary={item.name.replace('.' + fileExtension, '')} />
                     </ListItemButton>)}
                 </List>
